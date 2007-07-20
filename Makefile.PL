@@ -5,10 +5,10 @@ use ExtUtils::MakeMaker;
 # the contents of the Makefile that is written.
 WriteMakefile(
     (MM->can('signature_target') ? (SIGN => 1) : ()),
-    'NAME'		=> 'Geo::Coordinates::DecimalDegrees',
-    'VERSION_FROM'	=> 'DecimalDegrees.pm', # finds $VERSION
+    'NAME'		=> 'Graph::MaxFlow',
+    'VERSION_FROM'	=> 'MaxFlow.pm', # finds $VERSION
     'dist'        => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     ($] >= 5.005 ?    ## Add these new keywords supported since 5.005
-      (ABSTRACT_FROM => 'DecimalDegrees.pm', # retrieve abstract from module
-       AUTHOR     => 'Walt Mankowski <waltman@pobox.com>') : ()),
+      (ABSTRACT_FROM => 'MaxFlow.pm', # retrieve abstract from module
+       AUTHOR     => 'Walt Mankowski <waltman@cpan.org>') : ()),
 );
