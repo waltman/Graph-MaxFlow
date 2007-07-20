@@ -17,11 +17,10 @@ use warnings;
 # really edmonds-karp since I'm finding the shortest path from s to t
 # each time
 sub max_flow {
-    my $g = shift;
+    my ($g, $source, $sink) = @_;
     my $result = $g->deep_copy_graph;
 
-    while (1) {
-        my $path = shortest_path($result, "s", "t");
+    while (my $path = shortest_path($result, $source, $sink)) {
         last unless @$path;
 
         print "path = @$path\n";
