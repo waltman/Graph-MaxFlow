@@ -4,7 +4,6 @@ package Graph::MaxFlow;
 
 require Exporter;
 use Graph;
-use List::Util 'min';
 
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(max_flow);
@@ -14,23 +13,23 @@ $VERSION = '0.01';
 use strict;
 use warnings;
 
-# really edmonds-karp since I'm finding the shortest path from s to t
-# each time
+# Edmonds-Karp algorithm to find the maximum flow in $g between
+# $source and $sink
 sub max_flow {
     my ($g, $source, $sink) = @_;
     my $result = $g->deep_copy_graph;
 
-    while (my $path = shortest_path($result, $source, $sink)) {
+    while (1) {
+        # find the shortest augmenting path between $source and $sink
+        my $path = shortest_path($result, $source, $sink);
         last unless @$path;
 
-        print "path = @$path\n";
-
         # find min weight in path
-        my @weights;
+        my $min;
         for my $i (0..$#$path - 1) {
-            push @weights, $result->get_edge_weight($path->[$i], $path->[$i+1]);
+            my $weight = $result->get_edge_weight($path->[$i], $path->[$i+1]);
+            $min = $weight if !defined $min || $weight < $min;
         }
-        my $min = min(@weights);
 
         # subtract that from every edge in the path
         for my $i (0..$#$path - 1) {
@@ -38,17 +37,14 @@ sub max_flow {
             $result->set_edge_weight($path->[$i], $path->[$i+1], $weight-$min);
         }
 
-        print_flow($result);
     }
 
     # convert weights from residual to actual flow
     for my $e ($result->edges) {
         my $new = $result->get_edge_weight(@$e);
         my $old = $g->get_edge_weight(@$e);
-#        print "@$e, $old, $new\n";
         $result->set_edge_weight(@$e, $old - $new);
     }
-    print_flow($result);
 
     return $result;
 }
@@ -63,6 +59,7 @@ sub shortest_path {
     $next[0] = $from;
     my $found = 0;
 
+    # loop until we either reach $to or run out of nodes in the @next queue
     while (@next) {
         my $u = shift @next;
         if ($u eq $to) {
@@ -92,16 +89,6 @@ sub shortest_path {
     return \@path;
 }
 
-sub print_flow {
-    my $g = shift;
-
-    print "g = $g\n";
-
-    for my $e ($g->edges) {
-        printf "%s->%s, %d\n", $e->[0], $e->[1], $g->get_edge_weight(@$e);
-    }
-}
-
 1;
 
 =head1 NAME
@@ -118,20 +105,24 @@ Graph::MaxFlow - compute maximum flow between 2 vertices in a graph
 
 =head1 DESCRIPTION
 
-Computes the maximum flow in a graph.
+Computes the maximum flow in a graph, represented using Jarkko
+Hietaniemi's Graph.pm module.
 
 =head1 FUNCTIONS
 
-This module provides the following functions:
+This module provides the following function:
 
 =over 4
 
 =item max_flow($g, $s, $t)
 
 Computes the maximum flow in the graph $g between vertices $s and $t
-using the Edmonds-Karp algorithm.  $g must be a directed graph where
-the edge weights indicate the capacity of each edge.  $s and $t must
-be vertices in the graph.
+using the Edmonds-Karp algorithm.  $g must be a Graph.pm object, and
+must be a directed graph where the edge weights indicate the capacity
+of each edge.  The edge weights must be nonnegative.  $s and $t must
+be vertices in the graph.  The graph $g must be connected, and for
+every vertex v besides $s and $t there must be a path from $s to $t
+that passes through v.
 
 The return value is a new directed graph which has the same vertices
 and edges as $g, but where the edge weights have been adjusted to
@@ -148,7 +139,7 @@ Walt Mankowski, E<lt>waltman@cpan.orgE<gt>
 Copyright 2007 by Walt Mankowski
 
 This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself. 
+it under the same terms as Perl itself.
 
 =head1 ACKNOWLEDGEMENTS
 
