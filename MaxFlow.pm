@@ -1,5 +1,3 @@
-# $Id$
-
 package Graph::MaxFlow;
 
 require Exporter;
