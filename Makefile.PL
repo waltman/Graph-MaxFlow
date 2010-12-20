@@ -7,7 +7,7 @@ WriteMakefile(
     (MM->can('signature_target') ? (SIGN => 1) : ()),
     'NAME'		=> 'Graph::MaxFlow',
     'LICENSE'           => 'perl',
-    'PREREQ_PM'         => { 'Graph' => 0 },
+    'PREREQ_PM'         => { 'Graph' => "0.5" },
     'VERSION_FROM'	=> 'MaxFlow.pm', # finds $VERSION
     'dist'              => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     ($] >= 5.005 ?    ## Add these new keywords supported since 5.005
