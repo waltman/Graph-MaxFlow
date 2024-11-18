@@ -182,7 +182,7 @@ Walt Mankowski, E<lt>waltman@pobox.comE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2010 by Walt Mankowski
+Copyright 2024 by Walt Mankowski
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
