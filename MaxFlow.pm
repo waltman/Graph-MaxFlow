@@ -7,7 +7,7 @@ use Carp 'carp';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(max_flow);
 
-$VERSION = '0.03';
+$VERSION = '0.04';
 
 use strict;
 use warnings;
