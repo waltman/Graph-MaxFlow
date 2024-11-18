@@ -3,6 +3,8 @@ MaxFlow.pm
 INSTALL
 Makefile.PL
 MANIFEST
+MYMETA.json
+MYMETA.yml
 README
 SIGNATURE
 t/0-signature.t

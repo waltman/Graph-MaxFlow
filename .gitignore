@@ -3,4 +3,6 @@ blib
 Makefile
 Makefile.old
 MANIFEST.bak
+MYMETA.json
+MYMETA.yml
 Graph-MaxFlow-*.tar.gz
